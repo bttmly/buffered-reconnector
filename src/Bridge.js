@@ -1,4 +1,5 @@
 import EventEmitter from "events";
+import assert from "assert";
 import debug from "debug";
 
 import DeferredCall from "./DeferredCall"
@@ -10,7 +11,9 @@ const log = debug("bridge");
 export default class Bridge extends EventEmitter {
   constructor (initializer, options = {}) {
     super();
-    
+
+    assert.equal(typeof initializer, "function");
+
     this.connected = false;
     this._targetP = Promise.resolve(initializer(this));
     
@@ -52,6 +55,7 @@ export default class Bridge extends EventEmitter {
 
   // initializer must call this to set the closer
   onClose (closer) {
+    assert.equal(typeof closer, "function");
     this._close = () => Promise.resolve(closer());
   }
 

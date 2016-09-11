@@ -1,1 +1,1 @@
-export default from "./Reconnector";
+export default from "./src/Reconnector";

@@ -8,6 +8,10 @@ const log = debug("reconnector");
 // TODO -- event emitter for lifecycle stuff?
 export default class Reconnector {
   constructor (initializer, options = {}) {
+    if (typeof initializer !== "function") {
+      throw new Error("initializer must be a function");
+    }
+
     this._initializer = initializer;
     this._options = options;
     this._initialize();

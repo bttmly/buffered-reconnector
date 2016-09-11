@@ -1,5 +1,5 @@
 import Mock from "./Mock";
-import Reconnector from "./"
+import Reconnector from "../"
 
 let current;
 
@@ -40,6 +40,10 @@ const r = new Reconnector(function (bridge) {
 });
 
 const p = r.createProxy();
+
+setTimeout(() => { 
+  throw new Error("Process should have exited by now!")
+}, 10000).unref();
 
 Promise.resolve()
   .then(() => p.set(1, "one"))
