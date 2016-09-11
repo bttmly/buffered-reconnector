@@ -1,0 +1,21 @@
+{
+  "name": "generic-reconnect-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "debug": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "bluebird": "^3.4.6"
+  },
+  "scripts": {
+    "test": "DEBUG=reconnector,bridge babel-node demo.js"
+  },
+  "author": "Nick Bottomley (github.com/nickb1080)",
+  "license": "MIT"
+}
