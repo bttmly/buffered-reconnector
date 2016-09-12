@@ -31,7 +31,7 @@ prox.sendToQueue("my_queue", new Buffer("hello!"))
   .then(() => rc.close());
 
 // or, without proxies, there's this sort of balky API
-rc.call("sendToQueue", ["my_queue", new Buffer("hello"))
+rc.call("sendToQueue", ["my_queue", new Buffer("hello")])
    .then(() => rc.close());
 
 // now the process can exit cleanly
