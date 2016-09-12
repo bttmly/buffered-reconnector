@@ -16,12 +16,6 @@ export default class Bridge extends EventEmitter {
 
     this.connected = false;
     this._targetP = Promise.resolve(initializer(this));
-    
-    // a little optimization to avoid unnecessary extra promise/then after resolution
-    this._targetP.then(target => {
-      log("set_target");
-      this._target = target
-    });
 
     // forces initializer to call bridge.onClose
     if (!this._close) {
@@ -38,7 +32,8 @@ export default class Bridge extends EventEmitter {
 
   // called when client has disconnected
   hasDisconnected () {
-    log("disconnect")
+    log("disconnect");
+    this.connected = false;
     // this flag is set when closing (no reconnect)
     if (this._closing) return;
     this.emit("disconnect");
@@ -59,20 +54,20 @@ export default class Bridge extends EventEmitter {
     this._close = () => Promise.resolve(closer());
   }
 
-  call (method, args) {
-    if (this._target) {
-      return this._target[method](...args);
+  call (method, args = []) {
+    if (typeof method !== "string" && typeof method !== "symbol") {
+      return Promise.reject(new TypeError("method must be string or symbol"))
     }
 
+    if (!Array.isArray(args)) {
+      return Promise.reject(new TypeError("args must be an array"))
+    }
+
+    // assert args is array
     return this._targetP.then(target => target[method](...args));
   }
 
   invoke (deferred) {
-    if (this._target) {
-      deferred.invoke(this._target);
-      return;
-    }
-
     this._targetP.then(target => deferred.invoke(target));
   }
 }
