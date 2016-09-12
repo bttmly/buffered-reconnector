@@ -1,5 +1,5 @@
 {
-  "name": "generic-reconnect-client",
+  "name": "buffered-reconnector",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -17,7 +17,7 @@
     "mocha": "^3.0.2"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register ./test/DeferredCall ./test/Bridge",
+    "test": "mocha --compilers js:babel-core/register ./test/setup ./test/Reconnector ./test/Bridge ./test/DeferredCall",
     "smoke-test": "DEBUG=reconnector,bridge babel-node test/smoke.js"
   },
   "author": "Nick Bottomley (github.com/nickb1080)",

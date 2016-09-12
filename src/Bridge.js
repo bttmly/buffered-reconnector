@@ -23,7 +23,11 @@ export default class Bridge extends EventEmitter {
     }
   }
 
+  // we're deferring to the Reconnector a bit here -- "connect" and
+  // "disconnect" are both listened to with .once()
+
   // when underlying client has connected
+  // TODO -- determine whether calling this more than once is a problem
   hasConnected () {
     log("connect");
     this.connected = true;
@@ -31,6 +35,7 @@ export default class Bridge extends EventEmitter {
   }
 
   // called when client has disconnected
+  // TODO -- determine whether calling this more than once is a problem
   hasDisconnected () {
     log("disconnect");
     this.connected = false;

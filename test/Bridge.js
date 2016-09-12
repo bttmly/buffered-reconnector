@@ -6,9 +6,7 @@ import Bridge from "../src/Bridge"
 import { spy } from "./util";
 
 const noop = () => {};
-const noopInitializer = bridge => {
-  bridge.onClose(noop);
-};
+const noopInitializer = b => b.onClose(noop);
 
 const sym = Symbol();
 

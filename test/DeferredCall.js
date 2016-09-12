@@ -5,8 +5,6 @@ import { spy } from "./util";
 
 const noop = () => {};
 
-process.on("unhandledRejection", err => { throw err; });
-
 describe("DeferredCall", () => {
 
   it("accepts a function as first argument", () => {
