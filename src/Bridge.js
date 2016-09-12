@@ -1,5 +1,4 @@
 import EventEmitter from "events";
-import assert from "assert";
 import debug from "debug";
 
 import DeferredCall from "./DeferredCall"
@@ -11,10 +10,14 @@ const log = debug("bridge");
 export default class Bridge extends EventEmitter {
   constructor (initializer, options = {}) {
     super();
-
-    assert.equal(typeof initializer, "function");
+    if (typeof initializer !== "function") {
+      throw new TypeError("initializer must be a function")
+    }
 
     this.connected = false;
+
+    // maybe this should happen in a method call rather than using
+    // the initializer's return value?
     this._targetP = Promise.resolve(initializer(this));
 
     // forces initializer to call bridge.onClose
@@ -55,7 +58,10 @@ export default class Bridge extends EventEmitter {
 
   // initializer must call this to set the closer
   onClose (closer) {
-    assert.equal(typeof closer, "function");
+    if (typeof closer !== "function") {
+      throw new TypeError("closer must be a function")
+    }
+
     this._close = () => Promise.resolve(closer());
   }
 
@@ -75,4 +81,7 @@ export default class Bridge extends EventEmitter {
   invoke (deferred) {
     this._targetP.then(target => deferred.invoke(target));
   }
+
+  // might be useful for debugging, setting/getting non-method properties, other weird cases
+  getTarget () { return this._targetP }
 }

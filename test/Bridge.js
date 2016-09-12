@@ -1,5 +1,4 @@
 import EventEmitter from "events";
-import assert from "assert";
 import expect from "expect";
 
 import Bridge from "../src/Bridge"
@@ -28,13 +27,13 @@ const bridgeWithDb = db => new Bridge(b => {
 describe("Bridge", () => {
 
   it("requires a function as first argument", () => {
-    expect(() => new Bridge()).toThrow(assert.AssertionError)
+    expect(() => new Bridge()).toThrow(TypeError)
   }); 
 
   it("requires initializer calls bridge.onClose with a function", () => {
     expect(() => new Bridge(bridge => {
       bridge.onClose();
-    })).toThrow(assert.AssertionError)
+    })).toThrow(TypeError)
   });
 
   it("instantiates properly", () => {
@@ -67,7 +66,7 @@ describe("Bridge", () => {
 
   describe("#onClose / #close", () => {
     it("#onClose sets the #close handler", done => {
-      const f = spy(sym);
+      const f = spy(() => sym);
       const bridge = new Bridge(function (bridge) {
         bridge.onClose(f);
       });

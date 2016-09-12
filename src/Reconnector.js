@@ -9,7 +9,7 @@ const log = debug("reconnector");
 export default class Reconnector {
   constructor (initializer, options = {}) {
     if (typeof initializer !== "function") {
-      throw new Error("initializer must be a function");
+      throw new TypeError("initializer must be a function");
     }
 
     this._initializer = initializer;

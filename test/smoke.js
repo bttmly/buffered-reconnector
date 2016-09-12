@@ -41,10 +41,6 @@ const r = new Reconnector(function (bridge) {
 
 const p = r.createProxy();
 
-setTimeout(() => { 
-  throw new Error("Process should have exited by now!")
-}, 10000).unref();
-
 Promise.resolve()
   .then(() => p.set(1, "one"))
   .then(() => p.set(2, "two"))
@@ -64,9 +60,6 @@ Promise.resolve()
   // close the reconnector, letting the program exit
   .then(() => r.close());
 
-
-
-// setTimeout(() => {
-//   console.log('closing');
-//   r.close();
-// }, 1000)
+setTimeout(() => { 
+  throw new Error("Process should have exited by now!")
+}, 10000).unref();
