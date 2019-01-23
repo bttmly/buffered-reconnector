@@ -23,6 +23,7 @@ export default class DeferredCall {
 
     this._timer = setTimeout(() => 
       this._reject(new Error("Timeout")), timeout
+      this._timer = null;
     ).unref();
 
     this._invoked = false;
@@ -32,14 +33,16 @@ export default class DeferredCall {
   invoke (obj) {
     const {_method, _args, _resolve, _reject, _timer, _invoked} = this;
 
+    // if _timer is nulled out, this call has already run so do nothing and return
+    if (_timer == null) return;
+    // clear the timeout before we start the method. the timeout refers to only the 
+    // time spent waiting to START the method call, not the duration of the call itself
+    clearTimeout(_timer);
+    
     // not sure what to do here... ignore it, or throw an error?
     // almost certainly we want to prevent multiple calls, as they'll race to resolve
     if (_invoked) return;
     this._invoked = true;
-
-    // clear the timeout before we start the method. the timeout refers to only the 
-    // time spent waiting to START the method call, not the duration of the call itself
-    clearTimeout(_timer);
 
     if (typeof _method === "string" && obj == null) {
       reject("Must pass an invoke target if using a string reference")
@@ -51,7 +54,7 @@ export default class DeferredCall {
         _method.apply(obj, _args) : obj[_method](..._args);
         
       Promise.resolve(result).then(_resolve).catch(_reject);
-    } catch (e) { _reject(e); } 
+    } catch (e) { _reject(e); }
   }
 
   promise () { return this._promise }
